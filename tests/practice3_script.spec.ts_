@@ -1,0 +1,22 @@
+import { test, expect } from '@playwright/test'
+
+test('Мій перший сценарій навігації', async ({ page }) => {
+    await page.goto('https://www.cropp.com/ua/uk/')
+    await page.waitForLoadState('networkidle')
+
+    // Закриваємо cookies (якщо є)
+    const acceptCookies = page.getByRole('button', { name: /прийняти/i })
+    if (await acceptCookies.isVisible()) {
+        await acceptCookies.click()
+    }
+
+    // Знаходимо поле пошуку
+    const searchInput = page.getByPlaceholder('Шукати')
+
+    await expect(searchInput).toBeVisible()
+    await searchInput.fill('куртка')
+    await page.screenshot({ path: 'custom_search_filled.png' })  // ← СКРІНШОТ ПОЛЯ
+    await searchInput.press('Enter')
+    
+    await page.screenshot({ path: 'custom_after_search.png' })  // ← СКРІНШОТ РЕЗУЛЬТАТІВ
+})

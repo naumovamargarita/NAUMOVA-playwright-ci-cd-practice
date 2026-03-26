@@ -1,0 +1,73 @@
+import { test, expect } from '@playwright/test';
+
+test('Взаємодія з елементами форми та використання бібліотеки локаторів', async ({ page }) => {
+
+    // 1. Локатори
+    const locators = {
+        practiceFormsLink: page.locator('a[href="/forms"]'),
+        practiceFormLink: page.locator('a[href="/automation-practice-form"]'),
+        form: page.locator('form#userForm'),
+        firstNameInput: page.locator('#firstName'),
+        lastNameInput: page.locator('#lastName'),
+        userEmailInput: page.locator('#userEmail'),
+        genderRadioMale: page.locator('label[for="gender-radio-1"]'),
+        hobbiesCheckboxSports: page.locator('label[for="hobbies-checkbox-1"]'),
+        hobbiesCheckboxReading: page.locator('label[for="hobbies-checkbox-2"]'),
+        userNumberInput: page.locator('#userNumber'),
+        dateOfBirthInput: page.locator('#dateOfBirthInput'),
+        subjectsInput: page.locator('#subjectsInput'),
+        stateDropdownWrapper: page.locator('#state'),
+        stateDropdownInput: page.locator('#state input'),
+        cityDropdownWrapper: page.locator('#city'),
+        cityDropdownInput: page.locator('#city input'),
+        submitButton: page.locator('#submit')
+    };
+
+    // 2. Навігація
+    await page.goto('https://demoqa.com/');
+    await locators.practiceFormsLink.click();
+    await locators.practiceFormLink.click();
+
+    // 3. Валідація наявності елементів
+    for (const element of Object.values(locators)) {
+        if (element === locators.practiceFormsLink || element === locators.practiceFormLink) continue;
+        await expect(element).toBeAttached();
+    }
+
+    // 4. Реалізація автоматизації взаємодії з елементами форми
+    // 4.1 Введення тексту
+    await locators.firstNameInput.fill('Маргарита');
+    await locators.lastNameInput.fill('Наумова');
+    await locators.userEmailInput.fill('test@example.com');
+    await locators.userNumberInput.fill('0991234567');
+
+    // 4.2 Робота з Radiobutton та Checkbox
+    await locators.genderRadioMale.click();
+    await locators.hobbiesCheckboxSports.click();
+    await locators.hobbiesCheckboxReading.click();
+
+    // 4.3 Datepicker (Date of Birth)
+    await locators.dateOfBirthInput.click();
+    await locators.dateOfBirthInput.fill('10 Jul 1995');
+    await locators.dateOfBirthInput.press('Enter');
+
+    // 4.4 Subjects (Autocomplete)
+    await locators.subjectsInput.fill('Maths');
+    await locators.subjectsInput.press('Enter');
+
+    // 4.5 Dropdowns: State та City (React Select)
+    await locators.stateDropdownWrapper.click({ force: true });
+    await locators.stateDropdownInput.fill('NCR');
+    await locators.stateDropdownInput.press('Enter');
+
+    await locators.cityDropdownWrapper.click({ force: true });
+    await locators.cityDropdownInput.fill('Delhi');
+    await locators.cityDropdownInput.press('Enter');
+
+    // 4.6 Відправка форми
+    await locators.submitButton.click();
+
+    // 5. Перевірка результату (модальне вікно з підтвердженням)
+    const modalTitle = page.locator('#example-modal-sizes-title-lg');
+    await expect(modalTitle).toHaveText('Thanks for submitting the form');
+});

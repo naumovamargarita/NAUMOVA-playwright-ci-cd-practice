@@ -1,0 +1,17 @@
+[
+  {
+    "id": 7,
+    "title": "Chanel Coco Noir Eau De",
+    "expectedPrice": 129.99
+  },
+  {
+    "id": 17,
+    "title": "Beef Steak",
+    "expectedPrice": 12.99
+  },
+  {
+    "id": 25,
+    "title": "Green Bell Pepper",
+    "expectedPrice": 1.29
+  }
+]

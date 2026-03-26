@@ -1,0 +1,10 @@
+import { test, expect } from '@playwright/test'
+import { MyFormPage } from '../pages/MyFormPage'
+
+test('Мій POM тест форми', async ({ page }) => {
+  const formPage = new MyFormPage(page)
+  await formPage.goto()
+  await formPage.submitForm('Test Value')
+  // Очікуваний результат
+  await expect(page).toHaveURL(/success/)
+})

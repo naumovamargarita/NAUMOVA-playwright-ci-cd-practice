@@ -1,0 +1,18 @@
+import { test, expect } from '@playwright/test'
+import { LoginPage } from '../pages/LoginPage'
+
+test('Користувач може успішно залогінитись (POM)', async ({ page }) => {
+  const loginPage = new LoginPage(page)
+
+  // 1. Відкриваємо сторінку
+  await loginPage.goto()
+  
+  // 2. Логін
+  await loginPage.login('standard_user', 'secret_sauce')
+
+  // 3. Перевірка URL після логіну
+  await expect(page).toHaveURL(/inventory/)
+
+  // 4. Можна додати перевірку повідомлення про помилку
+  // await expect(loginPage.errorMessage).toBeVisible()
+})
