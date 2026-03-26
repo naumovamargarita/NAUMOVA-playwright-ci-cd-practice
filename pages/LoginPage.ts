@@ -14,22 +14,18 @@ export class LoginPage {
     this.loginButton = page.locator('#login-button')
     // this.errorMessage = page.locator('#error-message')
   }
-
   // Навігація
   async goto() {
     await this.page.goto('https://www.saucedemo.com/')
   }
-
   // Атомарні дії
   async fillLoginForm(user: string, pass: string) {
     await this.usernameInput.fill(user)
     await this.passwordInput.fill(pass)
   }
-
   async submit() {
     await this.loginButton.click()
   }
-
   // Високорівневий метод (Flow)
   async login(user: string, pass: string) {
     await this.fillLoginForm(user, pass)
